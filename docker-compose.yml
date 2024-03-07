@@ -1,0 +1,32 @@
+services:
+  app:
+    build: ./src/.
+    networks:
+      - app_network
+    restart: always
+    container_name: main_app
+    ports:
+      - ${PORT}:${PORT}
+
+  app_alembic:
+    build: ./src/.
+    restart: on-failure
+    container_name: main_app_alembic
+    command: [ "alembic", "upgrade", "head" ]
+    networks:
+      - app_network
+
+  db:
+    image: postgres
+    restart: always
+    shm_size: 200mb
+    environment:
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASS}
+      POSTGRES_DB: ${PG_DB_NAME}
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge

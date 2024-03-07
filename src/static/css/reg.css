@@ -1,0 +1,31 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.sign-button {
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    bottom: 100px;
+}
+
+
+.reg input {
+    border-width: 2px;
+    border-radius: 5px;
+    border-color: green;
+}
+
+.reg input, .reg button {
+    display: block;
+    width: 300px;
+    margin-bottom: 10px;
+}
+
+.reg button::before {
+    content: "Зарегистрироваться";
+}

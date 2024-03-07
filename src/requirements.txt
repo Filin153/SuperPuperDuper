@@ -1,0 +1,15 @@
+pandas
+openpyxl
+xlsxwriter
+fastapi[all]
+psycopg2
+pydantic_settings
+pydantic
+sqlalchemy
+bcrypt
+gunicorn
+alembic
+passlib
+python-jose>=3.3.0,<4.0.0
+openpyxl
+XlsxWriter

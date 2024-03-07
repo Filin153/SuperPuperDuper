@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>БимБом</title>
+    <script src="{{ url_for('static', path='js/file_do.js') }}"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 10px;
+            height: 100vh;
+            color: red;
+            font-size: 80px;
+        }
+
+        button {
+            position: relative;
+            left: 50%;
+            top: 50%;
+            background-color: red;
+            color: black;
+            border-radius: 10px;
+            width: 200px;
+            height: 150px;
+            font-size: 40px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h1>Что то пошло не так</h1>
+    <button onclick="toMenu()">Назад</button>
+</div>
+</body>
+</html>

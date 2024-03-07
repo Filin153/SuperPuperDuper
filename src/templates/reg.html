@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+{% include 'base_start.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Регестрация</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/reg.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="{{ url_for('static', path='js/token.js') }}"></script>
+</head>
+<body>
+    {% block reg_user %}{% endblock %}
+    <button id="next-button" type="button" class="btn btn-primary btn-sm sign-button" onclick="toSignIns()">Вход</button>
+</body>
+</html>
