@@ -1,4 +1,5 @@
-window.baseUrl = 'http://localhost:9999/';
+window.baseUrl = 'http://test.igoose.ru:9999/';
+// window.baseUrl = 'http://localhost:9999/';
 
 function userExit() {
     console.log("User exit")
@@ -33,9 +34,27 @@ function toRandom(filename, sheetname) {
     window.location.href = url
 }
 
+function deleteFile(filename) {
+    const authToken = localStorage.getItem("access_token");
+    const url = `${window.baseUrl}file/${filename}?token=${authToken}`;
+
+    fetch(url, {
+        method: "DELETE",
+    })
+        .then(resp => {
+            if (!resp.ok) {
+                console.log(resp.status);
+            } else {
+                toMenu();
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
+}
+
 function updateQ() {
-    const id = document.getElementById("num-q")
-    const que = document.getElementById("text-q")
+    const id = document.getElementById("info-id")
     const intValue = parseInt(id.innerText, 10);
     const filename = document.getElementById("filename")
     const sheet = document.getElementById("sheet")
@@ -44,20 +63,20 @@ function updateQ() {
     const repSheet = sheet.innerText.split(":")
 
     const authToken = localStorage.getItem("access_token");
-    const url = `${window.baseUrl}file/${repFileName[repFileName.length - 1].slice(1)}/${repSheet[repSheet.length - 1].slice(1)}/${intValue}?token=${authToken}&que=${que.innerText}`;
+    const url = `${window.baseUrl}file/${repFileName[repFileName.length - 1].slice(1)}/${repSheet[repSheet.length - 1].slice(1)}/${intValue}?token=${authToken}`;
 
     fetch(url, {
         method: "DELETE"
     })
         .then(resp => {
             if (!resp.ok) {
-                console.log(resp.status)
-                throw new Error("Status code != 200")
+                console.log(resp.status);
             } else {
-                window.location.reload()
+                window.location.reload();
             }
         })
         .catch(error => {
-            console.error(error)
-        })
+            console.error(error);
+        });
+
 }

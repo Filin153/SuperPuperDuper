@@ -1,12 +1,15 @@
 services:
   app:
     build: ./src/.
+    image: gusgus153/superduperpuper100
     networks:
       - app_network
     restart: always
     container_name: main_app
     ports:
       - ${PORT}:${PORT}
+    volumes:
+      - app:/app/file/
 
   app_alembic:
     build: ./src/.
@@ -30,3 +33,6 @@ services:
 networks:
   app_network:
     driver: bridge
+
+volumes:
+  app:

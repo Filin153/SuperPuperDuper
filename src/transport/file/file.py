@@ -13,27 +13,40 @@ router = APIRouter(
 
 
 @router.post("/")
-async def load_file(current_user: Annotated[User, Depends(auth_service.current_user)], file: UploadFile = File(...)):
-    if not file.filename.endswith(".xlsx"):
-        raise HTTPException(status_code=400, detail="Not an Excel file.")
-    await FileDo.save_file(current_user.login, file)
-    return Response(status_code=200)
+async def load_file(request: Request, current_user: Annotated[User, Depends(auth_service.current_user)],
+                    file: UploadFile = File(...)):
+    try:
+        if not file.filename.endswith(".xlsx"):
+            raise HTTPException(status_code=400, detail="Not an Excel file.")
+        await FileDo.save_file(current_user.login, file)
+        return Response(status_code=200)
+    except Exception:
+        return tmp.TemplateResponse("400.html",
+                                    context={"request": request})
 
 
 @router.get("/")
 async def get_files(request: Request, current_user: Annotated[User, Depends(auth_service.current_user)]):
-    return tmp.TemplateResponse("users_file.html",
-                                context={"request": request, "data": FileDo.get_files(login=current_user.login)})
+    try:
+        return tmp.TemplateResponse("users_file.html",
+                                    context={"request": request, "data": FileDo.get_files(login=current_user.login)})
+    except Exception:
+        return tmp.TemplateResponse("400.html",
+                                    context={"request": request})
 
 
 @router.get("/{filename}")
 async def get_sheets(filename: str, request: Request,
                      current_user: Annotated[User, Depends(auth_service.current_user)]):
-    FileDo.true_file(filename, current_user.login)
-    return tmp.TemplateResponse("sheets.html",
-                                context={"request": request,
-                                         "data": FileDo.get_sheets(login=current_user.login, file_name=filename),
-                                         "filename": filename})
+    try:
+        FileDo.true_file(filename, current_user.login)
+        return tmp.TemplateResponse("sheets.html",
+                                    context={"request": request,
+                                             "data": FileDo.get_sheets(login=current_user.login, file_name=filename),
+                                             "filename": filename})
+    except Exception:
+        return tmp.TemplateResponse("400.html",
+                                    context={"request": request})
 
 
 @router.get("/{filename}/{sheet}")
@@ -47,20 +60,28 @@ async def get_sheet_random_info(filename: str, sheet: str, request: Request,
                                                                                   file_name=filename, sheet=sheet),
                                              "filename": filename,
                                              "sheet": sheet})
-    except IndexError:
+    except Exception:
         return tmp.TemplateResponse("400.html",
                                     context={"request": request})
 
 
 @router.delete("/{filename}/{sheet}/{id}")
-async def delete_question(filename: str, sheet: str, id: Union[int, str], que: str,
-                          request: Request, current_user: Annotated[User, Depends(auth_service.current_user)]):
-    FileDo.true_file(filename, current_user.login)
-    return FileDo.delete_question(login=current_user.login, file_name=filename, sheet=sheet, id=id, que=que)
+async def delete_question(filename: str, sheet: str, id: int, request: Request,
+                          current_user: Annotated[User, Depends(auth_service.current_user)]):
+    try:
+        FileDo.true_file(filename, current_user.login)
+        return FileDo.delete_question(login=current_user.login, file_name=filename, sheet=sheet, id=id)
+    except Exception:
+        return tmp.TemplateResponse("400.html",
+                                    context={"request": request})
 
 
 @router.delete("/{filename}")
 async def delete_file(filename: str, request: Request,
                       current_user: Annotated[User, Depends(auth_service.current_user)]):
-    FileDo.true_file(filename, current_user.login)
-    return FileDo.delete_file(login=current_user.login, file_name=filename)
+    try:
+        FileDo.true_file(filename, current_user.login)
+        return FileDo.delete_file(login=current_user.login, file_name=filename)
+    except Exception:
+        return tmp.TemplateResponse("400.html",
+                                    context={"request": request})

@@ -29,20 +29,16 @@ class FileInfo:
         res = {}
         df = pd.read_excel(f"file/{login}/{file_name}", sheet_name=sheet, engine="openpyxl")
         res["count"] = len(df)
-        val = random.choice(df.values.tolist())
-        res['data'] = {
-            "Номер вопроса": val[0],
-            "ФИО": val[1],
-            "Место работы/учёбы": val[2],
-            "Должность/курс": val[3],
-            "Вопрос": val[4],
-        }
+        val = df.sample(n=1)
+
+        res["id"] = val.index[0]
+        res['data'] = val.to_dict()
         return res
 
 
 class FileAction:
     @staticmethod
-    def delete_question(login: str, file_name: str, sheet: str, id: Union[int, str], que: str) -> bool:
+    def delete_question(login: str, file_name: str, sheet: str, id: int) -> bool:
         """
         Удаляет значение строку по ID из эксель sheet
         :param login:
@@ -51,41 +47,36 @@ class FileAction:
         :param id:
         :return: bool
         """
-        try:
-            id = int(id)
-        except Exception:
-            pass
-
-        path = f"file/{login}/{file_name}"
-        path_tmp = f"file/{login}/tmp_{file_name}"
-        shutil.copy(path, path_tmp)
-
-        df = pd.read_excel(path_tmp, sheet_name=sheet, engine="openpyxl")
-
-        logging.debug(id)
-        logging.debug(que)
-        if id != "NaN" and not (id is None):
-            df = df[df['№ п/п'] != id]
-        else:
-            df = df[df['Вопрос'] != que]
-        df.dropna(subset=["ФИО", "Место работы/учёбы"], inplace=True)
-
-        with ExcelWriter(path) as writer:
-            rex = pd.ExcelFile(path_tmp)
-
-            sheets = rex.sheet_names
-            sheets.remove(sheet)
-            logging.debug(sheets)
-            for old_sheet in sheets:
-                pd.read_excel(path_tmp, sheet_name=old_sheet, engine="openpyxl").to_excel(writer, sheet_name=old_sheet, index=False, engine="openpyxl")
-
-            df.to_excel(writer, sheet_name=sheet, index=False, engine="openpyxl")
-        df = None
 
         try:
-            os.remove(path_tmp)
+            path = f"file/{login}/{file_name}"
+            path_tmp = f"file/{login}/tmp_{file_name}"
+            shutil.copy(path, path_tmp)
+
+            df = pd.read_excel(path_tmp, sheet_name=sheet, engine="openpyxl")
+            df = df.drop(index=id)
+
+            with ExcelWriter(path) as writer:
+                rex = pd.ExcelFile(path_tmp)
+
+                sheets = rex.sheet_names
+                sheets.remove(sheet)
+                logging.debug(sheets)
+                for old_sheet in sheets:
+                    pd.read_excel(path_tmp, sheet_name=old_sheet, engine="openpyxl").to_excel(writer, sheet_name=old_sheet, index=False, engine="openpyxl")
+
+                df.to_excel(writer, sheet_name=sheet, index=False, engine="openpyxl")
+            df = None
+
+            try:
+                os.remove(path_tmp)
+            except Exception as e:
+                logging.error(e)
+                return False
         except Exception as e:
             logging.error(e)
+            return False
+
         return True
 
     @staticmethod

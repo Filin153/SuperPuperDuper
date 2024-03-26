@@ -1,4 +1,5 @@
-window.baseUrl = 'http://localhost:9999/';
+window.baseUrl = 'http://test.igoose.ru:9999/';
+// window.baseUrl = 'http://localhost:9999/';
 
 function loadFile() {
     const fileInput = document.getElementById('fileInput');

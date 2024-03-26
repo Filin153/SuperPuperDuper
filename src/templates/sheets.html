@@ -11,10 +11,17 @@
     <link rel="stylesheet" href="{{ url_for('static', path='css/navig.css') }}">
 </head>
 <body>
-    {% block navig %}{% endblock %}
+{% block navig %}{% endblock %}
+<div class="d-grid gap-2 d-md-block justify-content-center text-center" id="navig-button">
+    <button type="button" class="btn btn-danger" id="delete-button" onclick="deleteFile('{{ filename }}')">Удалить
+        файл
+    </button>
+</div>
 
-    {% for item in data %}
-    <button type="button" class="btn btn-warning" id="item-button" onclick="toRandom('{{ filename }}', '{{ item }}')">{{ item }}</button>
-    {% endfor %}
+{% for item in data %}
+<button type="button" class="btn btn-warning" id="item-button" onclick="toRandom('{{ filename }}', '{{ item }}')">{{
+    item }}
+</button>
+{% endfor %}
 </body>
 </html>

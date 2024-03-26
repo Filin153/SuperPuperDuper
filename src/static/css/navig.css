@@ -7,18 +7,25 @@
 }
 
 .q-block {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.info-block {
+    list-style-type: none;
 }
 
 .info-block span {
-  font-size: 1.5em; /* Настройте размер шрифта для заголовка */
-  font-weight: bold; /* Сделайте текст жирным, чтобы выделить заголовок */
-  display: block; /* Разместите заголовок на новой строке */
+    font-size: 1.5em; /* Настройте размер шрифта для заголовка */
+    font-weight: bold; /* Сделайте текст жирным, чтобы выделить заголовок */
+    display: block; /* Разместите заголовок на новой строке */
 }
 
 .info-block p {
-  margin-top: 5px; /* Небольшое расстояние между заголовком и значением */
+    margin-top: 5px; /* Небольшое расстояние между заголовком и значением */
+}
+
+.container button {
+    text-align: center;
 }

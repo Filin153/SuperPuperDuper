@@ -16,20 +16,21 @@
 <p style="font: 50px bold">Всего {{ data["count"] }}</p>
 <p style="font: 20px bold" id="filename">Файл: {{ filename }}</p>
 <p style="font: 20px bold" id="sheet">Лист: {{ sheet }}</p>
+<p id="info-id" style="display: none;">{{ data["id"] }}</p>
 
-<div class="q-block">
-    {% for key in data["data"].keys() %}
-    <div class="info-block">
-        <span>{{ key }}</span>
-        {% if key == "Номер вопроса" %}
-        <p id="num-q">{{ data["data"][key] }}</p>
-        {% elif key == "Вопрос" %}
-        <p id="text-q">{{ data["data"][key] }}</p>
-        {% else %}
-        <p>{{ data["data"][key] }}</p>
-        {% endif %}
+<div class="container">
+    <div class="q-block">
+        <div class="info-block">
+            <ul>
+                {% for key in data["data"].keys() %}
+                <li>
+                    <span>{{ key }}</span>
+                    <p>{{ data["data"][key][data["id"]] }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
-    {% endfor %}
     <button type="button" class="btn btn-success" onclick="updateQ()">Обновит</button>
 </div>
 </body>
